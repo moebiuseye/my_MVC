@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteRule ^/i/(.*)$ - [L] 
+RewriteRule ^/css/(.*)$ - [L] 
+RewriteRule ^(.*)$ index.php?act=/$1 [L,QSA]
