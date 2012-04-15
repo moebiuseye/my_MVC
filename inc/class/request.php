@@ -12,17 +12,18 @@
  *      
 */
 class request {
-  private $link       ;   // Lien traité (sans dupliqué, )
+  private $link       ;
   
-  private $class     ;   // Nom de la class.
-  private $method    ;   // Sujet de la class. 
-  private $data  ;   // List d'élements, hors class et sujet.
+  private $class  = "default_t";   // Nom de la class.                (String)
+  private $method = "default_t";   // Sujet de la class.              (String)
+  private $data   = Array(NULL);   // List des arguments de la méthode (Array)
+  private $Object = NULL       ;
 
   
   function __construct ($link) {
   
   if ( strlen($link) == 0 ) {
-    $link = "/!GREET/";
+    $link = "/!default/"; // RESETTING TO DEFAULT action
   }
   
   // BEGIN Pre-treatement. 
@@ -66,8 +67,18 @@ class request {
   }
   
   function ignite () {
-    if ( file_exists( "controller/{$this->class}.php" ) ){
-      include_once("controller/{$this->acton}");
+    if ( in_array($this->class, $GLOBALS['registered_classes']) ){
+      if ( file_exists( "controler/{$this->class}.php" ) &&  file_exists( "view/{$this->class}.php" ) ){
+        include_once("controler/{$this->class}.php");
+      } else {
+        die ("No sux file or directory. Yeah, that suchs.");
+      }
+      $this->Object = new $this->class();
+      $this->Object->{$this->method}($this->data);
+    } else {
+      die ("No sux file or directory. Yeah, that suchs.");
     }
+    
+
   }
 }
