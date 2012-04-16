@@ -15,15 +15,16 @@ class request {
   private $link       ;
   
   private $class  = "default_t";   // Nom de la class.                (String)
-  private $method = "default_t";   // Sujet de la class.              (String)
+  private $method = "default_m";   // Sujet de la class.              (String)
   private $data   = Array(NULL);   // List des arguments de la méthode (Array)
   private $Object = NULL       ;
 
   
-  function __construct ($link) {
-  
+  function __construct () {
+  $args = func_get_args();
+  $link = @$args[0]."";
   if ( strlen($link) == 0 ) {
-    $link = "/!default/"; // RESETTING TO DEFAULT action
+    $link = "/!default_t:default_m/0/"; // RESETTING TO DEFAULT action
   }
   
   // BEGIN Pre-treatement. 
@@ -44,7 +45,7 @@ class request {
       $list = explode('/', $this->link);
       if ( @$list[0][0] == '!' ){
         $actsub = explode(':', $list[0]);
-        $this->class = str_replace("..", "", @$actsub[0]);
+        $this->class = substr(str_replace("..", "", @$actsub[0]), 1);
         $this->class = $this->class;
         $this->method = @$actsub[1];
         unset($list[0]);
@@ -52,12 +53,6 @@ class request {
   // END
 
   // BEGIN Get Item list
-    $list = array_values($list);
-    foreach ( $list as $key => $value ){
-      if ( @$value[0] == "!" ) {
-        unset($list[$key]);
-      }
-    }
     $this->data = array_values($list);
   // END
   }
@@ -67,18 +62,28 @@ class request {
   }
   
   function ignite () {
-    if ( in_array($this->class, $GLOBALS['registered_classes']) ){
-      if ( file_exists( "controler/{$this->class}.php" ) &&  file_exists( "view/{$this->class}.php" ) ){
+    if ( $GLOBALS['registered_classes'] === FALSE || in_array($this->class, $GLOBALS['registered_classes']) ){
+      if ( file_exists( "controler/{$this->class}.php" ) &&  file_exists( "view/{$this->class}/{$this->method}.php" ) ){
         include_once("controler/{$this->class}.php");
+        Try {
+          $this->Object = new $this->class();
+          @$this->Object->{$this->method}($this->data);
+          $view = $this->Object;
+          include_once("view/{$this->class}/{$this->method}.php");
+        }
+        Catch ( Exception $e ) {
+          $_404 = TRUE;
+        }
       } else {
-        die ("No sux file or directory. Yeah, that suchs.");
+        $_404 = TRUE;
       }
-      $this->Object = new $this->class();
-      $this->Object->{$this->method}($this->data);
     } else {
-      die ("No sux file or directory. Yeah, that suchs.");
+      $_404 = TRUE;
     }
     
-
+    if ( @$_404 === TRUE ){
+      header("404 Not Found");
+      echo "<p style='text-align: center;' >404 not found</p>";
+    }
   }
 }

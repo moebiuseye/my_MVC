@@ -2,11 +2,13 @@
 
 class default_t {
   public $args = Array();
-
-  public function default_t () {
+  
+  function default_t () {
+    
+  }
+  
+  public function default_m () {
     array_push($this->args, "Hello");
-    $args = $this->args;
-    return $this->args;
   }
 
   /* WARNING :
