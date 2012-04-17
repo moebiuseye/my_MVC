@@ -32,8 +32,8 @@
 <body>
 	<h1>It works!</h1>
   <p>This page works with the my_MVC library, quickly created by moebius_eye.</p>
-    <?php foreach ($view->args as $a): ?>
-      <p><?=$a?></p>
+    <?php foreach ($view->msg as $m): ?>
+      <p><?=$m?></p>
       <hr />
     <?php endforeach; ?>
 </body>

@@ -1,14 +1,15 @@
 <?php
 
 class default_t {
-  public $args = Array();
+  public $title = "It Works!";
+  public $msg = Array();
   
   function default_t () {
-    
+    $this->msg = Array( "'"=>"<Hi.>");
   }
   
   public function default_m () {
-    array_push($this->args, "Hello");
+    array_push($this->msg, "Hello");
   }
 
   /* WARNING :

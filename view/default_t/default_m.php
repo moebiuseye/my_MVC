@@ -24,7 +24,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<title>sans titre</title>
+	<title><?=htmlspecialchars($view->title)?></title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta name="generator" content="Geany 0.19.1" />
 </head>
@@ -32,8 +32,8 @@
 <body>
 	<h1>It works!</h1>
   <p>This page works with the my_MVC library, quickly created by moebius_eye.</p>
-    <?php foreach ($view->args as $a): ?>
-      <p><?=$a?></p>
+    <?php foreach ($view->msg as $id=>$m): ?>
+      <p id='<?=htmlspecialchars($id, ENT_QUOTES)?>'><?=htmlspecialchars($m)?></p>
       <hr />
     <?php endforeach; ?>
 </body>
