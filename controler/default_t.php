@@ -13,7 +13,7 @@ class default_t {
 
   /* WARNING :
    * Any private function cannot be called from
-   * the method and/or the view
+   * the model and/or the view
    * */
   private function view () {
     
