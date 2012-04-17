@@ -82,8 +82,11 @@ class request {
     }
     
     if ( @$_404 === TRUE ){
-      header("404 Not Found");
-      echo "<p style='text-align: center;' >404 not found</p>";
+      header("HTTP/1.0 404 Not Found");
+      echo "<html><body><h1 style='text-align: center;'>404 not found.</h1><p style='text-align: center;' >Your request cannot be met... </p></body></html>";
+      /*
+       * You can do better than that... 
+      */
     }
   }
 }
